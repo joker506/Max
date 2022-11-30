@@ -1,0 +1,40 @@
+$font: 'Lato', 'Arial', sans-serif;
+
+// Colors
+$color-primary: #00CBAD;
+$color-secondary: #de246d;
+$color-dark: #2C323F;
+
+// Body / Links
+$font-family: Lato, Arial, sans-serif;
+$font-size: 14px;
+$line-height: 1.6;
+$body-bg: #FAFAFB;
+$body-color: #565B65;
+$link-color: #000000;
+
+// Layout / Grid
+$site-padding: 20px;
+$site-padding-mobile: 15px;
+$grid-gutter: 30px;
+$min-width: 320px;
+$max-width: 1150px + $site-padding * 2;
+$breakpoints: (
+    xs: 0,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    xl-lg: 1440px,
+    xxl: 1800px
+);
+
+//Transition
+$transition: .25s ease-in-out;
+
+//Components
+$header-height: 70px;
+$header-height-tablet: 60px;
+$header-height-mobile: 50px;
+
+$panel-height: 80px;

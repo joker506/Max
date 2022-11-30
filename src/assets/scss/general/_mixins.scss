@@ -1,0 +1,195 @@
+@mixin reset-style-list {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 0;
+}
+
+@mixin wrapper {
+  max-width: 1024px;
+  padding: 0 48px;
+  margin: 0 auto;
+}
+
+@mixin btn-svg {
+  font-size: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  fill: #9F7711;
+  cursor: pointer;
+  &[disabled]svg {
+    opacity: 0.48;
+  }
+  &:hover svg {
+    fill: #735813;
+  }
+  &:active svg {
+    fill: #514116;
+  }
+}
+
+@mixin btn-in-circle {
+  display: block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: unset;
+  &:hover {
+    background-color: rgba(187, 138, 10, 0.16);
+  }
+  &:active {
+    background-color: rgba(187, 138, 10, 0.32);
+  }
+}
+
+
+@mixin gradient-text {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@mixin font-face($name, $path, $weight: null, $style: null, $exts: eot woff2 woff ttf svg) {
+  $src: null;
+
+  $extmods: (
+          eot: "?",
+          svg: "#" + str-replace($name, " ", "_")
+  );
+
+  $formats: (
+          otf: "opentype",
+          ttf: "truetype"
+  );
+
+  @each $ext in $exts {
+    $extmod: if(map-has-key($extmods, $ext), $ext + map-get($extmods, $ext), $ext);
+    $format: if(map-has-key($formats, $ext), map-get($formats, $ext), $ext);
+    $src: append($src, url(quote($path + "." + $extmod)) format(quote($format)), comma);
+  }
+
+  @font-face {
+    font-family: quote($name);
+    font-style: $style;
+    font-weight: $weight;
+    font-display: swap;
+    src: $src;
+  }
+}
+
+@mixin up($min) {
+  @if type_of($min) == string {
+    $min: map-get($breakpoints, $min);
+  }
+
+  @if $min != 0 {
+    @media (min-width: $min) {
+      @content;
+    }
+  }
+  @else {
+    @content;
+  }
+}
+
+@mixin down($max) {
+  @if type_of($max) == string {
+    $max: if($max != xs, map-get($breakpoints, $max) - 1, 0);;
+  }
+
+  @if $max != 0 {
+    @media (max-width: $max) {
+      @content;
+    }
+  }
+}
+
+@mixin above($args...) {
+  @include up($args...) {
+    @content;
+  }
+}
+
+@mixin below($args...) {
+  @include down($args...) {
+    @content;
+  }
+}
+
+@mixin between($min, $max) {
+  @include up($min) {
+    @include down($max) {
+      @content;
+    }
+  }
+}
+
+@mixin button() {
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+  text-align: center;
+
+  @at-root a#{&}, a#{&}:hover {
+    text-decoration: none;
+  }
+}
+
+@mixin container() {
+
+  &:nth-child(n) {
+    width: 100%;
+    padding-right: $site-padding;
+    padding-left: $site-padding;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: $max-width;
+
+    @include below(md) {
+      padding-right: $site-padding-mobile;
+      padding-left: $site-padding-mobile;
+    }
+  }
+};
+
+@mixin placeholder() {
+  &::-webkit-input-placeholder {
+    @content;
+  }
+  &:-moz-placeholder {
+    opacity: 1;
+    @content;
+  }
+  &::-moz-placeholder {
+    opacity: 1;
+    @content;
+  }
+  &:-ms-input-placeholder {
+    @content;
+  }
+}
+
+@mixin row() {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -$grid-gutter/2;
+  margin-left: -$grid-gutter/2;
+}
+
+@mixin col() {
+  padding: 0 $grid-gutter/2;
+  margin-bottom: $grid-gutter;
+
+  @include below(lg) {
+    margin-bottom: $grid-gutter/2;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}

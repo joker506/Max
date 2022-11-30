@@ -1,0 +1,130 @@
+<template>
+  <div>
+    <Steps class="sign-up__steps" :step="4" />
+    <h2 class="sign-up__title">Let's give you a name!</h2>
+    <form class="sign-up">
+      <span class="sign-up__subtitle"
+        >Enter your cover name (any what you want for your anonymity)</span
+      >
+      <div class="sign-up__wrap">
+        <Input
+          size="middle"
+          class="sign-up__name"
+          legend="User Name"
+          placeholder="User Name"
+          type="text"
+          maxlength="10"
+          v-model="userName"
+        />
+        <Button
+          class="sign-up__btn"
+          @click="changeStep('PatientStepEmail5')"
+          label="Submit"
+        />
+      </div>
+    </form>
+  </div>
+</template>
+
+<script>
+import { mapActions, mapState } from "vuex";
+import Steps from "@/components/blocks/Steps";
+
+export default {
+  name: "Step4",
+  data() {
+    return {
+      userName: "",
+    };
+  },
+  components: {
+    Steps,
+  },
+  methods: {
+    changeStep(step) {
+      this.$store.commit("signUp/SIGN_UP_PHONE", {
+        //first_name: this.userName,
+      });
+      this.$store
+        .dispatch("signUp/setInfoAnonymUser", {
+          identifier: this.identifier,
+          first_name: this.userName,
+        })
+        .then((res) =>
+          res.status === 200
+            ? this.$bus.emit("CHANGE_SIGN_UP_STEP", step)
+            : console.log("error")
+        );
+    },
+
+    ...mapActions({
+      getPositionUser: "signUp/getPositionUser",
+    }),
+  },
+  computed: {
+    ...mapState({
+      identifier: (state) => state.signUp.role.identifier,
+    }),
+  },
+
+  mounted: function() {
+    //this.country = this.countryUser;
+    this.getPositionUser();
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+.sign-up {
+  margin: auto;
+  margin-top: 50px;
+  width: 560px;
+  background: #ffffff;
+  box-shadow: 3px -5px 40px rgba(205, 205, 212, 0.1);
+  border-radius: 16px;
+  padding: 30px;
+  padding-bottom: 40px;
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: $font;
+  @include below(md) {
+    width: 100%;
+  }
+  &__subtitle {
+    color: #565b65;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 23px;
+    text-align: left;
+    width: 100%;
+    margin-bottom: 30px;
+  }
+  &__steps {
+    margin: auto;
+    margin-bottom: 60px;
+    width: 560px;
+  }
+  &__wrap {
+    width: 100%;
+  }
+  &__name {
+    width: 100%;
+    margin-bottom: 40px;
+  }
+  &__title {
+    font-family: Lato;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 38px;
+    text-align: center;
+    color: $color-dark;
+  }
+  &__btn {
+    width: 100%;
+  }
+}
+</style>
